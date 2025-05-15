@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>开发人员工具</title>
+    </head>
+    <html>
+        <form action="debug_showall", method="GET">
+            <input type="submit" value="Show all users">
+        </form>
+        <hr>
+        <form id="delete_user">
+            <input id="username" name="username" type="text" placeholder="用户名" required>
+
+            <br>
+
+            <input type="submit" value="删除用户">
+        </form>
+        <p id="statu"></p>
+        <script>
+            document.getElementById("delete_user").addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const username = document.getElementById('username').value;
+                fetch('/delete_user' ,{
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({"username": username})
+                })
+                .then(response => response.text())
+                .then(data => {
+                    const message = JSON.parse(data).message;
+                    alert(message);
+                }) 
+                .catch(err => {
+                    console.error('Error deleting ',err);
+                }); 
+            });
+        </script>
+    </html>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>注册用户</title>
+        <style>
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            input {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>注册</h1>
+        <form id="registerForm">
+            <label for="username">用户名</label>
+            <input type="text" id="username" name="username" placeholder="用户名" required>
+
+            <br>
+
+            <label for="password">密码</label>
+            <input type="text" id="password" name="password" placeholder="密码" required>
+
+            <br>
+
+            <input type="submit" value="注册">
+        </form>
+        <p id="result"></p> 
+        <script>
+            document.getElementById('registerForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: username,
+                        password: password
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('注册成功:', data);
+                    document.getElementById('result').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('注册失败:', error);
+                    alert('注册失败: ' + error);
+                });
+            });
+        </script>
+    </body>
+</html>
